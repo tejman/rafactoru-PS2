@@ -15,7 +15,7 @@ function map(items, f) {
 	for(var i=0, len=items.length; i<len; i++) {
 		output.push(f(items[i]));
 	}
-	return output;
+	return output; 
 }
 
 function filter(items, f) {

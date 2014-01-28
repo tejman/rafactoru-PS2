@@ -25,30 +25,58 @@ $(function() {
   };
 
   var letterCount = function(str) {
-    var splitString = str.split(" ");
-    var wordObjects = [];
+    var wordObjectsArray = [];
+    var wordArray = str.split(" ");
 
-    for(i=0; i<splitString.length; i++) {
+    for(var i=0; i<wordArray.length; i++) {
+      var newObject = {};
+      newObject.word = wordArray[i];
+      
+      var allCounts = repeatCharCount(wordArray[i]);
+      var totalRepeats = 0;
 
-      var myWord = splitString[i];
+      for(var j=0; j<allCounts.length; j++){
+        if(allCounts[j]>1){
+          totalRepeats++;
+        }
+      };
+      newObject.totalRepeats = totalRepeats;
+      wordObjectsArray.push(newObject);
+    };
+    return wordArray[highValueObject(wordObjectsArray)]
+  };
+
+  var highValueObject = function(arr) {
+    var totalArray = map(arr, function(item) {
+      return item.totalRepeats;
+    });
+    return totalArray.indexOf(Math.max.apply(null, totalArray))
+  };
+
+  var repeatCharCount = function(singleWord) {
+    var countArray = [];
+    var allChars = singleWord.split("");
+    var uniqueChars = []
+
+    $.each(allChars, function(i, indexValue){
+      if($.inArray(indexValue, uniqueChars)===-1) uniqueChars.push(indexValue);
+    });
+
+    var countArray = map(uniqueChars, function(item) {
       var count = 0;
-      allChars = myWord.split("");
-
-      console.log(allChars);
 
       for(i=0; i<allChars.length; i++) {
-        myChar = allChars[i];
-        $.inArray(myChar, allChars)!=(-1) ? count++ : "";
+        if(allChars[i]===item) {
+          count++;
+        }
       };
-
-      wordObjects.push({word: myWord, repeats: count});
-    };
-    console.log(wordObjects);
-    return
+      return count;
+    });
+    return countArray;
   };
 
 	
 var userString = prompt("Enter any string: ");
-console.log(letterCount(userString));
+console.log("The word with the most repeats is: "+letterCount(userString));
 
 });
